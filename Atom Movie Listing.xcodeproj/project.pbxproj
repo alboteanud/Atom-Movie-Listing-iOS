@@ -16,6 +16,10 @@
 		A48001C2256436950058EA13 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A48001C0256436950058EA13 /* LaunchScreen.storyboard */; };
 		A48001CD256436960058EA13 /* Atom_Movie_ListingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001CC256436960058EA13 /* Atom_Movie_ListingTests.swift */; };
 		A48001D8256436960058EA13 /* Atom_Movie_ListingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001D7256436960058EA13 /* Atom_Movie_ListingUITests.swift */; };
+		A48001EA256439B00058EA13 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001E9256439B00058EA13 /* Operations.swift */; };
+		A48001EF256439D80058EA13 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001EE256439D80058EA13 /* PersistentContainer.swift */; };
+		A48001F5256440F30058EA13 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001F4256440F30058EA13 /* Server.swift */; };
+		A48001FD256441970058EA13 /* TmdbServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001FC256441970058EA13 /* TmdbServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,10 @@
 		A48001D3256436960058EA13 /* Atom Movie ListingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atom Movie ListingUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48001D7256436960058EA13 /* Atom_Movie_ListingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atom_Movie_ListingUITests.swift; sourceTree = "<group>"; };
 		A48001D9256436960058EA13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A48001E9256439B00058EA13 /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
+		A48001EE256439D80058EA13 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
+		A48001F4256440F30058EA13 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		A48001FC256441970058EA13 /* TmdbServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmdbServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,12 +111,13 @@
 			children = (
 				A48001B2256436950058EA13 /* AppDelegate.swift */,
 				A48001B4256436950058EA13 /* SceneDelegate.swift */,
-				A48001B6256436950058EA13 /* ViewController.swift */,
-				A48001B8256436950058EA13 /* Main.storyboard */,
+				A48001F4256440F30058EA13 /* Server.swift */,
+				A48001F325643C2C0058EA13 /* UI */,
+				A48001E8256439A50058EA13 /* Model */,
 				A48001BE256436950058EA13 /* Assets.xcassets */,
 				A48001C0256436950058EA13 /* LaunchScreen.storyboard */,
 				A48001C3256436950058EA13 /* Info.plist */,
-				A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */,
+				A48001FC256441970058EA13 /* TmdbServer.swift */,
 			);
 			path = "Atom Movie Listing";
 			sourceTree = "<group>";
@@ -129,6 +138,25 @@
 				A48001D9256436960058EA13 /* Info.plist */,
 			);
 			path = "Atom Movie ListingUITests";
+			sourceTree = "<group>";
+		};
+		A48001E8256439A50058EA13 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A48001EE256439D80058EA13 /* PersistentContainer.swift */,
+				A48001E9256439B00058EA13 /* Operations.swift */,
+				A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A48001F325643C2C0058EA13 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A48001B8256436950058EA13 /* Main.storyboard */,
+				A48001B6256436950058EA13 /* ViewController.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,10 +289,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A48001F5256440F30058EA13 /* Server.swift in Sources */,
+				A48001FD256441970058EA13 /* TmdbServer.swift in Sources */,
 				A48001BD256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld in Sources */,
 				A48001B7256436950058EA13 /* ViewController.swift in Sources */,
+				A48001EF256439D80058EA13 /* PersistentContainer.swift in Sources */,
 				A48001B3256436950058EA13 /* AppDelegate.swift in Sources */,
 				A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */,
+				A48001EA256439B00058EA13 /* Operations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
