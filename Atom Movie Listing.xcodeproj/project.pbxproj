@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A48001B3256436950058EA13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B2256436950058EA13 /* AppDelegate.swift */; };
+		A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B4256436950058EA13 /* SceneDelegate.swift */; };
+		A48001B7256436950058EA13 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B6256436950058EA13 /* ViewController.swift */; };
+		A48001BA256436950058EA13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A48001B8256436950058EA13 /* Main.storyboard */; };
+		A48001BD256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */; };
+		A48001BF256436950058EA13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A48001BE256436950058EA13 /* Assets.xcassets */; };
+		A48001C2256436950058EA13 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A48001C0256436950058EA13 /* LaunchScreen.storyboard */; };
+		A48001CD256436960058EA13 /* Atom_Movie_ListingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001CC256436960058EA13 /* Atom_Movie_ListingTests.swift */; };
+		A48001D8256436960058EA13 /* Atom_Movie_ListingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001D7256436960058EA13 /* Atom_Movie_ListingUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A48001C9256436960058EA13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A48001A7256436950058EA13 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A48001AE256436950058EA13;
+			remoteInfo = "Atom Movie Listing";
+		};
+		A48001D4256436960058EA13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A48001A7256436950058EA13 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A48001AE256436950058EA13;
+			remoteInfo = "Atom Movie Listing";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A48001AF256436950058EA13 /* Atom Movie Listing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Atom Movie Listing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A48001B2256436950058EA13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A48001B4256436950058EA13 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A48001B6256436950058EA13 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A48001B9256436950058EA13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A48001BC256436950058EA13 /* Atom_Movie_Listing.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Atom_Movie_Listing.xcdatamodel; sourceTree = "<group>"; };
+		A48001BE256436950058EA13 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A48001C1256436950058EA13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A48001C3256436950058EA13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A48001C8256436960058EA13 /* Atom Movie ListingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atom Movie ListingTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A48001CC256436960058EA13 /* Atom_Movie_ListingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atom_Movie_ListingTests.swift; sourceTree = "<group>"; };
+		A48001CE256436960058EA13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A48001D3256436960058EA13 /* Atom Movie ListingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atom Movie ListingUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A48001D7256436960058EA13 /* Atom_Movie_ListingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atom_Movie_ListingUITests.swift; sourceTree = "<group>"; };
+		A48001D9256436960058EA13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A48001AC256436950058EA13 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A48001C5256436960058EA13 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A48001D0256436960058EA13 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A48001A6256436950058EA13 = {
+			isa = PBXGroup;
+			children = (
+				A48001B1256436950058EA13 /* Atom Movie Listing */,
+				A48001CB256436960058EA13 /* Atom Movie ListingTests */,
+				A48001D6256436960058EA13 /* Atom Movie ListingUITests */,
+				A48001B0256436950058EA13 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A48001B0256436950058EA13 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A48001AF256436950058EA13 /* Atom Movie Listing.app */,
+				A48001C8256436960058EA13 /* Atom Movie ListingTests.xctest */,
+				A48001D3256436960058EA13 /* Atom Movie ListingUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A48001B1256436950058EA13 /* Atom Movie Listing */ = {
+			isa = PBXGroup;
+			children = (
+				A48001B2256436950058EA13 /* AppDelegate.swift */,
+				A48001B4256436950058EA13 /* SceneDelegate.swift */,
+				A48001B6256436950058EA13 /* ViewController.swift */,
+				A48001B8256436950058EA13 /* Main.storyboard */,
+				A48001BE256436950058EA13 /* Assets.xcassets */,
+				A48001C0256436950058EA13 /* LaunchScreen.storyboard */,
+				A48001C3256436950058EA13 /* Info.plist */,
+				A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */,
+			);
+			path = "Atom Movie Listing";
+			sourceTree = "<group>";
+		};
+		A48001CB256436960058EA13 /* Atom Movie ListingTests */ = {
+			isa = PBXGroup;
+			children = (
+				A48001CC256436960058EA13 /* Atom_Movie_ListingTests.swift */,
+				A48001CE256436960058EA13 /* Info.plist */,
+			);
+			path = "Atom Movie ListingTests";
+			sourceTree = "<group>";
+		};
+		A48001D6256436960058EA13 /* Atom Movie ListingUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A48001D7256436960058EA13 /* Atom_Movie_ListingUITests.swift */,
+				A48001D9256436960058EA13 /* Info.plist */,
+			);
+			path = "Atom Movie ListingUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A48001AE256436950058EA13 /* Atom Movie Listing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A48001DC256436960058EA13 /* Build configuration list for PBXNativeTarget "Atom Movie Listing" */;
+			buildPhases = (
+				A48001AB256436950058EA13 /* Sources */,
+				A48001AC256436950058EA13 /* Frameworks */,
+				A48001AD256436950058EA13 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Atom Movie Listing";
+			productName = "Atom Movie Listing";
+			productReference = A48001AF256436950058EA13 /* Atom Movie Listing.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A48001C7256436960058EA13 /* Atom Movie ListingTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A48001DF256436960058EA13 /* Build configuration list for PBXNativeTarget "Atom Movie ListingTests" */;
+			buildPhases = (
+				A48001C4256436960058EA13 /* Sources */,
+				A48001C5256436960058EA13 /* Frameworks */,
+				A48001C6256436960058EA13 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A48001CA256436960058EA13 /* PBXTargetDependency */,
+			);
+			name = "Atom Movie ListingTests";
+			productName = "Atom Movie ListingTests";
+			productReference = A48001C8256436960058EA13 /* Atom Movie ListingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A48001D2256436960058EA13 /* Atom Movie ListingUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A48001E2256436960058EA13 /* Build configuration list for PBXNativeTarget "Atom Movie ListingUITests" */;
+			buildPhases = (
+				A48001CF256436960058EA13 /* Sources */,
+				A48001D0256436960058EA13 /* Frameworks */,
+				A48001D1256436960058EA13 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A48001D5256436960058EA13 /* PBXTargetDependency */,
+			);
+			name = "Atom Movie ListingUITests";
+			productName = "Atom Movie ListingUITests";
+			productReference = A48001D3256436960058EA13 /* Atom Movie ListingUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A48001A7256436950058EA13 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1220;
+				LastUpgradeCheck = 1220;
+				TargetAttributes = {
+					A48001AE256436950058EA13 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					A48001C7256436960058EA13 = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = A48001AE256436950058EA13;
+					};
+					A48001D2256436960058EA13 = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = A48001AE256436950058EA13;
+					};
+				};
+			};
+			buildConfigurationList = A48001AA256436950058EA13 /* Build configuration list for PBXProject "Atom Movie Listing" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A48001A6256436950058EA13;
+			productRefGroup = A48001B0256436950058EA13 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A48001AE256436950058EA13 /* Atom Movie Listing */,
+				A48001C7256436960058EA13 /* Atom Movie ListingTests */,
+				A48001D2256436960058EA13 /* Atom Movie ListingUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A48001AD256436950058EA13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A48001C2256436950058EA13 /* LaunchScreen.storyboard in Resources */,
+				A48001BF256436950058EA13 /* Assets.xcassets in Resources */,
+				A48001BA256436950058EA13 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A48001C6256436960058EA13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A48001D1256436960058EA13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A48001AB256436950058EA13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A48001BD256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld in Sources */,
+				A48001B7256436950058EA13 /* ViewController.swift in Sources */,
+				A48001B3256436950058EA13 /* AppDelegate.swift in Sources */,
+				A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A48001C4256436960058EA13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A48001CD256436960058EA13 /* Atom_Movie_ListingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A48001CF256436960058EA13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A48001D8256436960058EA13 /* Atom_Movie_ListingUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A48001CA256436960058EA13 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A48001AE256436950058EA13 /* Atom Movie Listing */;
+			targetProxy = A48001C9256436960058EA13 /* PBXContainerItemProxy */;
+		};
+		A48001D5256436960058EA13 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A48001AE256436950058EA13 /* Atom Movie Listing */;
+			targetProxy = A48001D4256436960058EA13 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A48001B8256436950058EA13 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A48001B9256436950058EA13 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A48001C0256436950058EA13 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A48001C1256436950058EA13 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A48001DA256436960058EA13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A48001DB256436960058EA13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A48001DD256436960058EA13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KF7QVMJ987;
+				INFOPLIST_FILE = "Atom Movie Listing/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alboteanu.ios.Atom-Movie-Listing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A48001DE256436960058EA13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KF7QVMJ987;
+				INFOPLIST_FILE = "Atom Movie Listing/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alboteanu.ios.Atom-Movie-Listing";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A48001E0256436960058EA13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KF7QVMJ987;
+				INFOPLIST_FILE = "Atom Movie ListingTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alboteanu.ios.Atom-Movie-ListingTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atom Movie Listing.app/Atom Movie Listing";
+			};
+			name = Debug;
+		};
+		A48001E1256436960058EA13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KF7QVMJ987;
+				INFOPLIST_FILE = "Atom Movie ListingTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alboteanu.ios.Atom-Movie-ListingTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atom Movie Listing.app/Atom Movie Listing";
+			};
+			name = Release;
+		};
+		A48001E3256436960058EA13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KF7QVMJ987;
+				INFOPLIST_FILE = "Atom Movie ListingUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alboteanu.ios.Atom-Movie-ListingUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Atom Movie Listing";
+			};
+			name = Debug;
+		};
+		A48001E4256436960058EA13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KF7QVMJ987;
+				INFOPLIST_FILE = "Atom Movie ListingUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alboteanu.ios.Atom-Movie-ListingUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Atom Movie Listing";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A48001AA256436950058EA13 /* Build configuration list for PBXProject "Atom Movie Listing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A48001DA256436960058EA13 /* Debug */,
+				A48001DB256436960058EA13 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A48001DC256436960058EA13 /* Build configuration list for PBXNativeTarget "Atom Movie Listing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A48001DD256436960058EA13 /* Debug */,
+				A48001DE256436960058EA13 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A48001DF256436960058EA13 /* Build configuration list for PBXNativeTarget "Atom Movie ListingTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A48001E0256436960058EA13 /* Debug */,
+				A48001E1256436960058EA13 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A48001E2256436960058EA13 /* Build configuration list for PBXNativeTarget "Atom Movie ListingUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A48001E3256436960058EA13 /* Debug */,
+				A48001E4256436960058EA13 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A48001BC256436950058EA13 /* Atom_Movie_Listing.xcdatamodel */,
+			);
+			currentVersion = A48001BC256436950058EA13 /* Atom_Movie_Listing.xcdatamodel */;
+			path = Atom_Movie_Listing.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = A48001A7256436950058EA13 /* Project object */;
+}
