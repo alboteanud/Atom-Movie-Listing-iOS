@@ -84,7 +84,7 @@ class DownloadEntriesFromServerOperation: Operation {
     var result: Result<[ServerEntry], Error>?
     
     private var downloading = false
-    private var currentDownloadTask: DownloadTask?
+    private var currentDownloadTask: URLSessionDataTask?
     
     init(context: NSManagedObjectContext, server: Server) {
         self.context = context
@@ -138,9 +138,8 @@ class DownloadEntriesFromServerOperation: Operation {
             finish(result: .failure(OperationError.cancelled))
             return
         }
-        
-//        currentDownloadTask = server.fetchEntries(since: sinceDate, completion: finish)
-        server.fetchMovies(since: sinceDate, completion: finish)
+        currentDownloadTask =  server.fetchMovies(since: sinceDate, completion: finish)
+        currentDownloadTask?.resume()
     }
 }
 

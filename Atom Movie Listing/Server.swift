@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Server {
-    func fetchMovies(since startDate: Date, completion: @escaping (Result<[ServerEntry], Error>) -> Void)
+    func fetchMovies(since startDate: Date, completion: @escaping (Result<[ServerEntry], Error>) -> Void)-> URLSessionDataTask?
 }
 
 // A cancellable download task.
