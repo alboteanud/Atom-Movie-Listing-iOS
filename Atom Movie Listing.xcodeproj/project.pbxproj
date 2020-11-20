@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		A48001B3256436950058EA13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B2256436950058EA13 /* AppDelegate.swift */; };
 		A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B4256436950058EA13 /* SceneDelegate.swift */; };
-		A48001B7256436950058EA13 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B6256436950058EA13 /* ViewController.swift */; };
+		A48001B7256436950058EA13 /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B6256436950058EA13 /* FeedTableViewController.swift */; };
 		A48001BA256436950058EA13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A48001B8256436950058EA13 /* Main.storyboard */; };
 		A48001BD256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */; };
 		A48001BF256436950058EA13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A48001BE256436950058EA13 /* Assets.xcassets */; };
@@ -19,7 +19,8 @@
 		A48001EA256439B00058EA13 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001E9256439B00058EA13 /* Operations.swift */; };
 		A48001EF256439D80058EA13 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001EE256439D80058EA13 /* PersistentContainer.swift */; };
 		A48001F5256440F30058EA13 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001F4256440F30058EA13 /* Server.swift */; };
-		A48001FD256441970058EA13 /* TmdbServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001FC256441970058EA13 /* TmdbServer.swift */; };
+		A489AA562567D83B001973FE /* FeedEnrtyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A489AA552567D83B001973FE /* FeedEnrtyTableViewCell.swift */; };
+		A489AA5C2567DCB8001973FE /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A489AA5B2567DCB8001973FE /* Mocks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +44,7 @@
 		A48001AF256436950058EA13 /* Atom Movie Listing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Atom Movie Listing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48001B2256436950058EA13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A48001B4256436950058EA13 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A48001B6256436950058EA13 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A48001B6256436950058EA13 /* FeedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewController.swift; sourceTree = "<group>"; };
 		A48001B9256436950058EA13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A48001BC256436950058EA13 /* Atom_Movie_Listing.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Atom_Movie_Listing.xcdatamodel; sourceTree = "<group>"; };
 		A48001BE256436950058EA13 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -58,7 +59,8 @@
 		A48001E9256439B00058EA13 /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
 		A48001EE256439D80058EA13 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		A48001F4256440F30058EA13 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
-		A48001FC256441970058EA13 /* TmdbServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmdbServer.swift; sourceTree = "<group>"; };
+		A489AA552567D83B001973FE /* FeedEnrtyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEnrtyTableViewCell.swift; sourceTree = "<group>"; };
+		A489AA5B2567DCB8001973FE /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +119,7 @@
 				A48001BE256436950058EA13 /* Assets.xcassets */,
 				A48001C0256436950058EA13 /* LaunchScreen.storyboard */,
 				A48001C3256436950058EA13 /* Info.plist */,
-				A48001FC256441970058EA13 /* TmdbServer.swift */,
+				A489AA5A2567DC98001973FE /* SimulatedServer */,
 			);
 			path = "Atom Movie Listing";
 			sourceTree = "<group>";
@@ -154,9 +156,18 @@
 			isa = PBXGroup;
 			children = (
 				A48001B8256436950058EA13 /* Main.storyboard */,
-				A48001B6256436950058EA13 /* ViewController.swift */,
+				A489AA552567D83B001973FE /* FeedEnrtyTableViewCell.swift */,
+				A48001B6256436950058EA13 /* FeedTableViewController.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		A489AA5A2567DC98001973FE /* SimulatedServer */ = {
+			isa = PBXGroup;
+			children = (
+				A489AA5B2567DCB8001973FE /* Mocks.swift */,
+			);
+			path = SimulatedServer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,13 +301,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A48001F5256440F30058EA13 /* Server.swift in Sources */,
-				A48001FD256441970058EA13 /* TmdbServer.swift in Sources */,
+				A489AA562567D83B001973FE /* FeedEnrtyTableViewCell.swift in Sources */,
 				A48001BD256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld in Sources */,
-				A48001B7256436950058EA13 /* ViewController.swift in Sources */,
+				A48001B7256436950058EA13 /* FeedTableViewController.swift in Sources */,
 				A48001EF256439D80058EA13 /* PersistentContainer.swift in Sources */,
 				A48001B3256436950058EA13 /* AppDelegate.swift in Sources */,
 				A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */,
 				A48001EA256439B00058EA13 /* Operations.swift in Sources */,
+				A489AA5C2567DCB8001973FE /* Mocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

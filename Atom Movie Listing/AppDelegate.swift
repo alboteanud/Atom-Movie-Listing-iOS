@@ -7,16 +7,33 @@
 
 import UIKit
 import CoreData
+import BackgroundTasks
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    private let server: Server = MockServer()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        PersistentContainer.shared.loadInitialData()
+        
+        // MARK: Registering Launch Handlers for Tasks
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.albotenu.AtomMovieListing.refresh", using: nil) { task in
+            // Downcast the parameter to an app refresh task as this identifier is used for a refresh request.
+            self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        }
+        
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.albotenu.AtomMovieListing.db_cleaning", using: nil) { task in
+            // Downcast the parameter to a processing task as this identifier is used for a processing request.
+            self.handleDatabaseCleaning(task: task as! BGProcessingTask)
+        }
+        
         return true
     }
+    
+    //  e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"com.albotenu.AtomMovieListing.refresh"]
 
     // MARK: UISceneSession Lifecycle
 
@@ -31,50 +48,89 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-    // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "Atom_Movie_Listing")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+    
+    // MARK: - Scheduling Tasks
+    
+    func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: "com.albotenu.AtomMovieListing.refresh")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60) // Fetch no earlier than 15 minutes from now
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
         }
+    }
+    
+    func scheduleDatabaseCleaningIfNeeded() {
+        let lastCleanDate = PersistentContainer.shared.lastCleaned ?? .distantPast
+
+        let now = Date()
+        let oneWeek = TimeInterval(7 * 24 * 60 * 60)
+
+        // Clean the database at most once per week.
+        guard now > (lastCleanDate + oneWeek) else { return }
+        
+        let request = BGProcessingTaskRequest(identifier: "com.albotenu.AtomMovieListing.db_cleaning")
+        request.requiresNetworkConnectivity = false
+        request.requiresExternalPower = true
+        
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule database cleaning: \(error)")
+        }
+    }
+    
+    // MARK: - Handling Launch for Tasks
+    
+    // Fetch the latest feed entries from server.
+    func handleAppRefresh(task: BGAppRefreshTask) {
+        scheduleAppRefresh()
+        
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        
+        let context = PersistentContainer.shared.newBackgroundContext()
+        let operations = Operations.getOperationsToFetchLatestEntries(using: context, server: server)
+        let lastOperation = operations.last!
+        
+        task.expirationHandler = {
+            // After all operations are cancelled, the completion block below is called to set the task to complete.
+            queue.cancelAllOperations()
+        }
+
+        lastOperation.completionBlock = {
+            task.setTaskCompleted(success: !lastOperation.isCancelled)
+        }
+
+        queue.addOperations(operations, waitUntilFinished: false)
+    }
+    
+    // Delete feed entries older than one day.
+    func handleDatabaseCleaning(task: BGProcessingTask) {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+
+        let context = PersistentContainer.shared.newBackgroundContext()
+        let predicate = NSPredicate(format: "timestamp < %@", NSDate(timeIntervalSinceNow: -24 * 60 * 60))
+        let cleanDatabaseOperation = DeleteFeedEntriesOperation(context: context, predicate: predicate)
+        
+        task.expirationHandler = {
+            // After all operations are cancelled, the completion block below is called to set the task to complete.
+            queue.cancelAllOperations()
+        }
+
+        cleanDatabaseOperation.completionBlock = {
+            let success = !cleanDatabaseOperation.isCancelled
+            if success {
+                // Update the last clean date to the current time.
+                PersistentContainer.shared.lastCleaned = Date()
+            }
+            
+            task.setTaskCompleted(success: success)
+        }
+        
+        queue.addOperation(cleanDatabaseOperation)
     }
 
 }

@@ -138,7 +138,7 @@ class DownloadEntriesFromServerOperation: Operation {
             finish(result: .failure(OperationError.cancelled))
             return
         }
-        currentDownloadTask =  server.fetchMovies(since: sinceDate, completion: finish)
+        currentDownloadTask =  server.fetchEntries(since: sinceDate, completion: finish)
         currentDownloadTask?.resume()
     }
 }
@@ -150,6 +150,7 @@ extension FeedEntry {
         self.id = serverEntry.id
         self.title = serverEntry.title
         self.poster_path = serverEntry.poster_path
+        self.overview = serverEntry.overview
         self.timestamp = Date()
     }
 }
@@ -158,7 +159,7 @@ extension FeedEntry {
 class AddEntriesToStoreOperation: Operation {
     private let context: NSManagedObjectContext
     var entries: [ServerEntry]?
-    var delay: TimeInterval = 1
+    var delay: TimeInterval = 0
 
     init(context: NSManagedObjectContext) {
         self.context = context
