@@ -10,9 +10,9 @@ import CoreData
 
 class TableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     private let server: Server = MovieServer()
-    var fetchRequest: NSFetchRequest<FeedEntry>!
+    var fetchRequest: NSFetchRequest<ListEntry>!
     
-    private var fetchedResultsController: NSFetchedResultsController<FeedEntry>!
+    private var fetchedResultsController: NSFetchedResultsController<ListEntry>!
     
     @IBAction func updateButtonTapped(_ sender: Any) {
         fetchLatestEntries()
@@ -26,8 +26,8 @@ class TableViewController: UITableViewController, NSFetchedResultsControllerDele
     
     func initFetchedResultsController(){
         if fetchRequest == nil {
-            fetchRequest = FeedEntry.fetchRequest()
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.popularity), ascending: false)]
+            fetchRequest = ListEntry.fetchRequest()
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ListEntry.popularity), ascending: false)]
         }
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                               managedObjectContext: PersistentContainer.shared.viewContext,
@@ -116,9 +116,9 @@ class TableViewController: UITableViewController, NSFetchedResultsControllerDele
     }
 
     func configure(cell: TableViewCell, at indexPath: IndexPath) {
-        let feedEntry = fetchedResultsController.object(at: indexPath)
-        cell.feedEntry = feedEntry
-        server.fetchImage(feedEntry.poster_path){ image in
+        let listEntry = fetchedResultsController.object(at: indexPath)
+        cell.listEntry = listEntry
+        server.fetchImage(listEntry.poster_path){ image in
             cell.entryImage = image
         }?.resume()
     }
@@ -174,7 +174,7 @@ class TableViewController: UITableViewController, NSFetchedResultsControllerDele
             if let indexPath = tableView.indexPathForSelectedRow {
                 let object = fetchedResultsController.object(at: indexPath)
                 let controller = segue.destination as! DetailsViewController
-                controller.feedEntry = object
+                controller.listEntry = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }

@@ -49,7 +49,7 @@ class MovieServer: Server {
     }
 
     // fetch movies
-    func fetchEntries (pageNumber: Int32, completion: @escaping (Result<ServerResult, Error>) -> Void) -> URLSessionDataTask? {
+    func fetchServerEntries (pageNumber: Int32, completion: @escaping (Result<ServerResult, Error>) -> Void) -> URLSessionDataTask? {
         let urlString = getEntriesEndpointUrl(pageNumber: pageNumber)
         print(urlString)
         let url = URL(string: urlString)!   //        else {completion(.failure(DownloadError.invalidRequest))
@@ -76,7 +76,7 @@ class MovieServer: Server {
     }
     
     // fetch single movie
-    func fetchEntry (entryId: Int32, completion: @escaping (ServerResultSingleEntry?) -> Void) -> URLSessionDataTask? {
+    func fetchServerEntry (entryId: Int32, completion: @escaping (ServerEntryResult?) -> Void) -> URLSessionDataTask? {
         let urlString = getEntryEndpointUrl(entryId: entryId)
         guard let url = URL(string: urlString)
         else {
@@ -92,7 +92,7 @@ class MovieServer: Server {
                 return
             }
             do {
-                let decoded = try JSONDecoder().decode(ServerResultSingleEntry.self, from: data)
+                let decoded = try JSONDecoder().decode(ServerEntryResult.self, from: data)
 //                print("downloaded entry data genres: \(String(describing: decoded.genres))")
                 self.queue.async {
                     completion(decoded)
@@ -167,7 +167,7 @@ extension PersistentContainer {
         let context = newBackgroundContext()
         context.perform {
             do {
-                let allEntriesRequest: NSFetchRequest<NSFetchRequestResult> = FeedEntry.fetchRequest()
+                let allEntriesRequest: NSFetchRequest<NSFetchRequestResult> = ListEntry.fetchRequest()
                 if !onlyIfNeeded {
                     // Delete all data currently in the store
                     let deleteAllRequest = NSBatchDeleteRequest(fetchRequest: allEntriesRequest)
@@ -178,7 +178,7 @@ extension PersistentContainer {
                 }
                 if try !onlyIfNeeded || context.count(for: allEntriesRequest) == 0 {
                     self.downloadNewEntries(server: server, context:context)
-                    server.fetchEntries(pageNumber: 1){_ in
+                    server.fetchServerEntries(pageNumber: 1){_ in
                         
                     }
                     try context.save()

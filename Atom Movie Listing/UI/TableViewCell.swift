@@ -12,10 +12,10 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var myImageView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    var feedEntry: FeedEntry? {
+    var listEntry: ListEntry? {
         didSet {
-            titleLabel.text = feedEntry?.title
-            descriptionLabel.text = feedEntry?.overview
+            titleLabel.text = listEntry?.title
+            descriptionLabel.text = listEntry?.overview
         }
     }
     var entryImage: UIImage? {

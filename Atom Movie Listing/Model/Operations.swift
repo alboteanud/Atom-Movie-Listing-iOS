@@ -67,7 +67,7 @@ struct Operations {
 }
 
 
-func getNextPageNumber(feedEntry: FeedEntry?) -> Int32 {
+func getNextPageNumber(feedEntry: ListEntry?) -> Int32 {
     let currentPage = feedEntry?.page ?? 0
     let nextPage = currentPage + 1
     return nextPage
@@ -77,15 +77,15 @@ func getNextPageNumber(feedEntry: FeedEntry?) -> Int32 {
 class FetchMostRecentEntryOperation: Operation {
     private let context: NSManagedObjectContext
     
-    var result: FeedEntry?
+    var result: ListEntry?
     
     init(context: NSManagedObjectContext) {
         self.context = context
     }
     
     override func main() {
-        let request: NSFetchRequest<FeedEntry> = FeedEntry.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.page), ascending: false)]
+        let request: NSFetchRequest<ListEntry> = ListEntry.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(ListEntry.page), ascending: false)]
         request.fetchLimit = 1
         
         context.performAndWait {
@@ -167,13 +167,13 @@ class DownloadEntriesFromServerOperation: Operation {
             finish(result: .failure(OperationError.cancelled))
             return
         }
-        currentDownloadTask = server.fetchEntries(pageNumber: pageNumber, completion: finish)
+        currentDownloadTask = server.fetchServerEntries(pageNumber: pageNumber, completion: finish)
         currentDownloadTask?.resume()
     }
 }
 
 // An extension to create a FeedEntry object from the server representation of an entry.
-extension FeedEntry {
+extension ListEntry {
     convenience init(context: NSManagedObjectContext, serverEntry: ServerEntry, page: Int32) {
         self.init(context: context)
         self.id = serverEntry.id
@@ -224,7 +224,7 @@ class AddEntriesToStoreOperation: Operation {
         context.performAndWait {
             do {
                 for entry in entries {
-                    _ = FeedEntry(context: context, serverEntry: entry, page: page)
+                    _ = ListEntry(context: context, serverEntry: entry, page: page)
                     
                     print("Adding entry with title: \(String(describing: entry.title))")
                     
@@ -264,9 +264,9 @@ class DeleteFeedEntriesOperation: Operation {
     }
     
     override func main() {
-        let fetchRequest: NSFetchRequest<FeedEntry> = FeedEntry.fetchRequest()
+        let fetchRequest: NSFetchRequest<ListEntry> = ListEntry.fetchRequest()
         fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.release_date), ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ListEntry.release_date), ascending: true)]
         
         context.performAndWait {
             do {

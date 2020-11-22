@@ -9,7 +9,7 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
-    var feedEntry: FeedEntry!
+    var listEntry: ListEntry!
     let server = MovieServer()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
@@ -20,31 +20,31 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if feedEntry == nil {
+        if listEntry == nil {
             print("invalid entry")
             return
         }
         
         configureViews()
         
-        server.fetchEntry(entryId: feedEntry.id){result in
+        server.fetchServerEntry(entryId: listEntry.id){result in
             DispatchQueue.main.async {
                 self.updateViews(detailedEntry: result)
             }
-        }? .resume()
+        }?.resume()
     }
     
     func configureViews(){
-        titleLabel.text = feedEntry.title
-        overviewLabel.text = feedEntry.overview
-        server.fetchImage(feedEntry.poster_path){ image in
+        titleLabel.text = listEntry.title
+        overviewLabel.text = listEntry.overview
+        server.fetchImage(listEntry.poster_path){ image in
             DispatchQueue.main.async {
                 self.mImageView.image = image ?? UIImage(named: "PlaceholderMovie")
             }
         }?.resume()
     }
     
-    func updateViews(detailedEntry: ServerResultSingleEntry?){
+    func updateViews(detailedEntry: ServerEntryResult?){
         guard let entry = detailedEntry else { return}
         
         titleLabel.text = entry.title

@@ -11,7 +11,7 @@ import UIKit
 protocol Server {
     // Fetch any entries on the server that are on the page number
     @discardableResult
-    func fetchEntries(pageNumber: Int32, completion: @escaping (Result<ServerResult, Error>) -> Void)-> URLSessionDataTask?
+    func fetchServerEntries(pageNumber: Int32, completion: @escaping (Result<ServerResult, Error>) -> Void)-> URLSessionDataTask?
     
     func fetchImage(_ posterPath: String?, completion: @escaping (UIImage? ) -> Void) -> URLSessionDataTask?
     
@@ -60,7 +60,7 @@ struct ServerResult: Codable {
 //"overview": "A lowly utility worker is called to the future by a mysterious radio signal, he must leave his dying wife to embark on a journey that will force him to face his deepest fears in an attempt to change the fabric of reality and save humankind from its greatest environmental crisis yet.",
 //"release_date": "2020-10-01"}
 
-struct ServerResultSingleEntry: Codable {
+struct ServerEntryResult: Codable {
     struct genre : Codable {
         let id: Int?
         let name : String?

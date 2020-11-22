@@ -47,7 +47,7 @@ class PersistentContainer: NSPersistentContainer {
         let context = newBackgroundContext()
         context.perform {
             do {
-                let allEntriesRequest: NSFetchRequest<NSFetchRequestResult> = FeedEntry.fetchRequest()
+                let allEntriesRequest: NSFetchRequest<NSFetchRequestResult> = ListEntry.fetchRequest()
                 
                 // Delete all data currently in the store
                 let deleteAllRequest = NSBatchDeleteRequest(fetchRequest: allEntriesRequest)
