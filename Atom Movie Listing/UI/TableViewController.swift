@@ -8,8 +8,8 @@
 import UIKit
 import CoreData
 
-class FeedTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
-    private let server: Server = MockServer()
+class TableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+    private let server: Server = MovieServer()
     var fetchRequest: NSFetchRequest<FeedEntry>!
     
     private var fetchedResultsController: NSFetchedResultsController<FeedEntry>!
@@ -20,7 +20,7 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.titleView = getTitleView(titleText: "ATOM", imageName: "Atom")
+        navigationItem.titleView = buildTitleView(titleText: "ATOM", imageName: "Atom")
         initFetchedResultsController()
     }
     
@@ -53,6 +53,14 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
             return sectionInfo.numberOfObjects
         } else { return 0 }
     }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let myArrayCount = fetchedResultsController.sections?.count ?? 0
+        if indexPath.row + 1 == myArrayCount {
+            print(" you reached end of the table")
+//            fetchLatestEntries()
+        }
+    }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -83,7 +91,7 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
             guard let indexPath = indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
         case .update:
-            if let cell = tableView.cellForRow(at: indexPath!) as? FeedEntryTableViewCell {
+            if let cell = tableView.cellForRow(at: indexPath!) as? TableViewCell {
                 configure(cell: cell, at: indexPath!)
             }
         case .move:
@@ -100,16 +108,19 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "entryCell",
-                                                       for: indexPath) as? FeedEntryTableViewCell else {
+                                                       for: indexPath) as? TableViewCell else {
             fatalError("Could not dequeue cell")
         }
         configure(cell: cell, at: indexPath)
         return cell
     }
 
-    func configure(cell: FeedEntryTableViewCell, at indexPath: IndexPath) {
+    func configure(cell: TableViewCell, at indexPath: IndexPath) {
         let feedEntry = fetchedResultsController.object(at: indexPath)
         cell.feedEntry = feedEntry
+        server.fetchImage(feedEntry.poster_path){ image in
+            cell.entryImage = image
+        }?.resume()
     }
     
     // method to run when table view cell is tapped
@@ -141,7 +152,6 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
         queue.addOperations(operations, waitUntilFinished: false)
     }
     
-    
     @IBAction private func showActions(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.popoverPresentationController?.barButtonItem = sender
@@ -149,7 +159,6 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
         let deleteText = NSLocalizedString("Delete all stored data", comment: "You want to delete all data")
         alertController.addAction(UIAlertAction(title: deleteText, style: .destructive, handler: { _ in
             PersistentContainer.shared.deleteAllStoredData()
-//            PersistentContainer.shared.loadInitialData(onlyIfNeeded: false)
         }))
         
         let cancelText =  NSLocalizedString("Cancel", comment: "Quit")
@@ -172,8 +181,7 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
         }
     }
     
-    
-    func getTitleView(titleText: String, imageName: String) -> UIView {
+    func buildTitleView(titleText: String, imageName: String) -> UIView {
 
         // Creates a new UIView
         let titleView = UIView()

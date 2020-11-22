@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import UIKit
 
 protocol Server {
-    // Fetch any entries on the server that are more recent than the start date.
+    // Fetch any entries on the server that are on the page number
     @discardableResult
-    func fetchEntries(since startDate: Date, completion: @escaping (Result<[ServerEntry], Error>) -> Void)-> URLSessionDataTask?
+    func fetchEntries(pageNumber: Int32, completion: @escaping (Result<ServerResult, Error>) -> Void)-> URLSessionDataTask?
+    
+    func fetchImage(_ posterPath: String?, completion: @escaping (UIImage? ) -> Void) -> URLSessionDataTask?
+    
 }
 
 // A cancellable download task.
@@ -33,9 +37,13 @@ struct ServerEntry : Codable {
 
 struct ServerResult: Codable {
     let results: [ServerEntry]
+    let page: Int32
 }
 // response
-
+//{
+//"page": 3,
+//"total_results": 10000,
+//"total_pages": 500,
 //"results": [
 //{"popularity": 1387.546,
 //"vote_count": 338,

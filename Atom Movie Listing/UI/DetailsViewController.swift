@@ -10,7 +10,7 @@ import UIKit
 class DetailsViewController: UIViewController {
     
     var feedEntry: FeedEntry!
-    let server = MockServer()
+    let server = MovieServer()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var mImageView: UIImageView!
@@ -37,7 +37,11 @@ class DetailsViewController: UIViewController {
     func configureViews(){
         titleLabel.text = feedEntry.title
         overviewLabel.text = feedEntry.overview
-        mImageView.loadImageUsingUrlString(posterPath: feedEntry.poster_path)
+        server.fetchImage(feedEntry.poster_path){ image in
+            DispatchQueue.main.async {
+                self.mImageView.image = image ?? UIImage(named: "PlaceholderMovie")
+            }
+        }?.resume()
     }
     
     func updateViews(detailedEntry: ServerResultSingleEntry?){
@@ -53,13 +57,13 @@ class DetailsViewController: UIViewController {
             if joinedCompaniesString != "" {
                 productionCompaniesLabel.text = joinedCompaniesString + "."
             }
-// else hide productin frame
+            // else hide productin frame
             
         }
-      
-       
+        
+        
     }
     
-
-
+    
+    
 }

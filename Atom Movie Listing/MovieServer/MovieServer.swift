@@ -7,11 +7,13 @@
 
 import Foundation
 import CoreData
+import UIKit
 
-// Simulates a remote server by generating randomized ServerEntry results
-class MockServer: Server {
+class MovieServer: Server {
     
     private let queue = DispatchQueue(label: "TmdbServerQueue")
+    private let imageCache = NSCache<NSString, UIImage>()
+    let myTmdbApiKey = "8700e0b55b9438b27963771c2aff54f5"
 
     enum DownloadError: Error {
         case cancelled
@@ -20,7 +22,7 @@ class MockServer: Server {
         case networkError
     }
 
-    private class MockDownloadTask: DownloadTask {
+    private class MyDownloadTask: DownloadTask {
         var isCancelled = false
         let onCancelled: () -> Void
         let queue: DispatchQueue
@@ -47,8 +49,9 @@ class MockServer: Server {
     }
 
     // fetch movies
-    func fetchEntries (since startDate: Date, completion: @escaping (Result<[ServerEntry], Error>) -> Void) -> URLSessionDataTask? {
-        let urlString = getEntriesEndpointUrl(pageNumber: 1)
+    func fetchEntries (pageNumber: Int32, completion: @escaping (Result<ServerResult, Error>) -> Void) -> URLSessionDataTask? {
+        let urlString = getEntriesEndpointUrl(pageNumber: pageNumber)
+        print(urlString)
         let url = URL(string: urlString)!   //        else {completion(.failure(DownloadError.invalidRequest))
         
         return URLSession.shared.dataTask(with: url) { data, response, error in
@@ -61,7 +64,7 @@ class MockServer: Server {
                 let decoded = try JSONDecoder().decode(ServerResult.self, from: data)
                 if decoded.results.count > 0 {
                     self.queue.async {
-                        completion(.success(decoded.results))
+                        completion(.success(decoded))
                     }
                 } else {
                     print("downloaded data is empty")
@@ -100,41 +103,65 @@ class MockServer: Server {
         }
     }
     
-    func getEntriesEndpointUrl(pageNumber: Int) -> String {
-        return "https://api.themoviedb.org/3/movie/popular?api_key=8700e0b55b9438b27963771c2aff54f5"
+    func fetchImage(_ posterPath: String?, completion: @escaping (UIImage? ) -> Void) -> URLSessionDataTask? {
+        guard let posterPath = posterPath else {
+            completion(nil)
+            return nil }
+        if let imageFromCache = self.imageCache.object(forKey: posterPath as NSString) {
+        self.queue.async {
+//                let imageFromCacheWithFilter = imageFromCache.addFilter(filter: FilterType.Noir)
+                completion(imageFromCache)
+            }
+            return nil
+        }
+        
+        // TODO: get image from Core Data
+        // ...
+
+        
+        // Let's go to the network
+        let urlString = buildPhotoDownloadUrl(photoPath: posterPath)
+        guard let url = URL(string: urlString) else {
+            completion(nil)
+            return nil}
+        return URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let imageFromNetwork = UIImage(data: data)
+            else {
+                completion(nil)
+                return }
+            
+            self.queue.async {
+                completion(imageFromNetwork)
+                self.imageCache.setObject(imageFromNetwork, forKey: posterPath as NSString)
+            }
+            
+        })
+    }
+  
+    func getEntriesEndpointUrl(pageNumber: Int32) -> String {
+        return "https://api.themoviedb.org/3/movie/popular?api_key=\(myTmdbApiKey)&&page=\(pageNumber)"
     }
     
+    // https://api.themoviedb.org/3/movie/741067?api_key=8700e0b55b9438b27963771c2aff54f5
     func getEntryEndpointUrl(entryId: Int32) -> String {
-        // https://api.themoviedb.org/3/movie/741067?api_key=8700e0b55b9438b27963771c2aff54f5
-        let url = "https://api.themoviedb.org/3/movie/\(entryId)?api_key=8700e0b55b9438b27963771c2aff54f5"
+        let url = "https://api.themoviedb.org/3/movie/\(entryId)?api_key=\(myTmdbApiKey)"
         return url
     }
     
-    func buildPhotoDownloadUrl(photoPath: String) -> URL? {
-        // https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg
+    // https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg
+    func buildPhotoDownloadUrl(photoPath: String) -> String {
         let urlString = "https://image.tmdb.org/t/p/w500\(photoPath)"
 //        print(urlString)
-        guard let url = URL(string: urlString) else { return nil}
-        //        print ("paths", url.pathComponents)
-        return url
-        
-//        if url.pathComponents.count > 2 {
-//            let photoId = url.pathComponents[2]
-//            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-//            components.path = "/id/\(photoId)/50/50.jpg"
-//            //            print(components.url!)
-//            // expected result: "https://i.picsum.photos/id/1006/50/50.jpg"
-//            return components.url!
-//        }
-//        return nil
+        return urlString
     }
-    
-    
-    
 }
 
 extension PersistentContainer {
-    // Fills the Core Data store with initial fake data
+    // Fills the Core Data store with initial server data
     // If onlyIfNeeded is true, only does so if the store is empty
     func loadInitialData(onlyIfNeeded: Bool = true, server: Server) {
         let context = newBackgroundContext()
@@ -150,12 +177,10 @@ extension PersistentContainer {
                                                         into: [self.viewContext])
                 }
                 if try !onlyIfNeeded || context.count(for: allEntriesRequest) == 0 {
-                    let now = Date()
-                    let start = now - (7 * 24 * 60 * 60)
-                    let end = now - (60 * 60)
-                    
-//                    _ = generateFakeEntries(from: start, to: end).map { FeedEntry(context: context, serverEntry: $0) }
-                    self.fetchLatestEntries(server: server)
+                    self.downloadNewEntries(server: server, context:context)
+                    server.fetchEntries(pageNumber: 1){_ in
+                        
+                    }
                     try context.save()
                     
                     self.lastCleaned = nil
@@ -166,21 +191,16 @@ extension PersistentContainer {
         }
     }
     
-    func fetchLatestEntries(server: Server){
-
-        // update local DB
+    func downloadNewEntries(server: Server, context: NSManagedObjectContext){
         let queue = OperationQueue()
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 1
-
-        let context = newBackgroundContext()
         let operations = Operations.getOperationsToFetchLatestEntries(using: context, server: server)
         operations.last?.completionBlock = {
-//            DispatchQueue.main.async {
-       
-//            }
+//            DispatchQueue.main.async {  }
         }
         queue.addOperations(operations, waitUntilFinished: false)
     }
+ 
     
 }

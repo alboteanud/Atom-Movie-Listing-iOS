@@ -7,40 +7,70 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 struct Operations {
     // Returns an array of operations for fetching the latest entries and then adding them to the Core Data store.
     static func getOperationsToFetchLatestEntries(using context: NSManagedObjectContext, server: Server) -> [Operation] {
         let fetchMostRecentEntry = FetchMostRecentEntryOperation(context: context)
-        let downloadFromServer = DownloadEntriesFromServerOperation(context: context,
-                                                                             server: server)
-//        let passTimestampToServer = BlockOperation { [unowned fetchMostRecentEntry, unowned downloadFromServer] in
-//            guard let timestamp = fetchMostRecentEntry.result?.release_date else {
-//                downloadFromServer.cancel()
-//                return
-//            }
-//            downloadFromServer.sinceDate = timestamp
-//        }
-//        passTimestampToServer.addDependency(fetchMostRecentEntry)
-//        downloadFromServer.addDependency(passTimestampToServer)
+        let downloadFromServer = DownloadEntriesFromServerOperation(context: context, server: server)
+        let passPageToServer = BlockOperation { [unowned fetchMostRecentEntry, unowned downloadFromServer] in
+            downloadFromServer.pageNumber = getNextPageNumber(feedEntry: fetchMostRecentEntry.result)
+        }
+        passPageToServer.addDependency(fetchMostRecentEntry)
+        downloadFromServer.addDependency(passPageToServer)
         
         let addToStore = AddEntriesToStoreOperation(context: context)
         let passServerResultsToStore = BlockOperation { [unowned downloadFromServer, unowned addToStore] in
-            guard case let .success(entries)? = downloadFromServer.result else {
+            guard case let .success(serverResult)? = downloadFromServer.result else {
                 addToStore.cancel()
                 return
             }
-            addToStore.entries = entries
+            addToStore.serverResult = serverResult
         }
         passServerResultsToStore.addDependency(downloadFromServer)
         addToStore.addDependency(passServerResultsToStore)
         
         return [fetchMostRecentEntry,
-//                passTimestampToServer,
+                passPageToServer,
                 downloadFromServer,
                 passServerResultsToStore,
                 addToStore]
     }
+
+    static func getOperationsToFetchImage(using context: NSManagedObjectContext, server: Server) -> [Operation] {
+        let fetchMostRecentEntry = FetchMostRecentEntryOperation(context: context)
+        let downloadFromServer = DownloadEntriesFromServerOperation(context: context, server: server)
+        let passPageToServer = BlockOperation { [unowned fetchMostRecentEntry, unowned downloadFromServer] in
+            downloadFromServer.pageNumber = getNextPageNumber(feedEntry: fetchMostRecentEntry.result)
+        }
+        passPageToServer.addDependency(fetchMostRecentEntry)
+        downloadFromServer.addDependency(passPageToServer)
+        
+        let addToStore = AddEntriesToStoreOperation(context: context)
+        let passServerResultsToStore = BlockOperation { [unowned downloadFromServer, unowned addToStore] in
+            guard case let .success(serverResult)? = downloadFromServer.result else {
+                addToStore.cancel()
+                return
+            }
+            addToStore.serverResult = serverResult
+        }
+        passServerResultsToStore.addDependency(downloadFromServer)
+        addToStore.addDependency(passServerResultsToStore)
+        
+        return [fetchMostRecentEntry,
+                passPageToServer,
+                downloadFromServer,
+                passServerResultsToStore,
+                addToStore]
+    }
+}
+
+
+func getNextPageNumber(feedEntry: FeedEntry?) -> Int32 {
+    let currentPage = feedEntry?.page ?? 0
+    let nextPage = currentPage + 1
+    return nextPage
 }
 
 // Fetches the most recent entry from the Core Data store.
@@ -55,7 +85,7 @@ class FetchMostRecentEntryOperation: Operation {
     
     override func main() {
         let request: NSFetchRequest<FeedEntry> = FeedEntry.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.release_date), ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.page), ascending: false)]
         request.fetchLimit = 1
         
         context.performAndWait {
@@ -79,9 +109,9 @@ class DownloadEntriesFromServerOperation: Operation {
 
     private let context: NSManagedObjectContext
     private let server: Server
-    var sinceDate: Date?
+    var pageNumber: Int32?
     
-    var result: Result<[ServerEntry], Error>?
+    var result: Result<ServerResult, Error>?
     
     private var downloading = false
     private var currentDownloadTask: URLSessionDataTask?
@@ -91,9 +121,9 @@ class DownloadEntriesFromServerOperation: Operation {
         self.server = server
     }
     
-    convenience init(context: NSManagedObjectContext, server: Server, sinceDate: Date?) {
+    convenience init(context: NSManagedObjectContext, server: Server, pageNumber: Int32) {
         self.init(context: context, server: server)
-        self.sinceDate = sinceDate
+        self.pageNumber = pageNumber
     }
     
     override var isAsynchronous: Bool {
@@ -115,7 +145,7 @@ class DownloadEntriesFromServerOperation: Operation {
         }
     }
     
-    func finish(result: Result<[ServerEntry], Error>) {
+    func finish(result: Result<ServerResult, Error>) {
         guard downloading else { return }
         
         willChangeValue(forKey: #keyPath(isExecuting))
@@ -133,19 +163,18 @@ class DownloadEntriesFromServerOperation: Operation {
         willChangeValue(forKey: #keyPath(isExecuting))
         downloading = true
         didChangeValue(forKey: #keyPath(isExecuting))
-        sinceDate = Date()
-        guard !isCancelled, let sinceDate = sinceDate else {
+        guard !isCancelled, let pageNumber = pageNumber else {
             finish(result: .failure(OperationError.cancelled))
             return
         }
-        currentDownloadTask =  server.fetchEntries(since: sinceDate, completion: finish)
+        currentDownloadTask = server.fetchEntries(pageNumber: pageNumber, completion: finish)
         currentDownloadTask?.resume()
     }
 }
 
 // An extension to create a FeedEntry object from the server representation of an entry.
 extension FeedEntry {
-    convenience init(context: NSManagedObjectContext, serverEntry: ServerEntry) {
+    convenience init(context: NSManagedObjectContext, serverEntry: ServerEntry, page: Int32) {
         self.init(context: context)
         self.id = serverEntry.id
         self.title = serverEntry.title
@@ -155,6 +184,7 @@ extension FeedEntry {
         self.popularity = serverEntry.popularity ?? 0
         self.original_language = original_language
         self.vote_average = vote_average
+        self.page = page
     }
 }
 
@@ -172,30 +202,31 @@ func getDate(_ dateString: String?) -> Date {
 // Add entries returned from the server to the Core Data store.
 class AddEntriesToStoreOperation: Operation {
     private let context: NSManagedObjectContext
-    var entries: [ServerEntry]?
-    var delay: TimeInterval = 0.2
+    var serverResult: ServerResult?
+    var delay: TimeInterval = 0
 
     init(context: NSManagedObjectContext) {
         self.context = context
     }
     
-    convenience init(context: NSManagedObjectContext, entries: [ServerEntry], delay: TimeInterval? = nil) {
+    convenience init(context: NSManagedObjectContext, serverResult: ServerResult, delay: TimeInterval? = nil) {
         self.init(context: context)
-        self.entries = entries
+        self.serverResult = serverResult
         if let delay = delay {
             self.delay = delay
         }
     }
     
     override func main() {
-        guard let entries = entries else { return }
+        guard let entries = serverResult?.results,
+              let page = serverResult?.page else { return }
 
         context.performAndWait {
             do {
                 for entry in entries {
-                    _ = FeedEntry(context: context, serverEntry: entry)
+                    _ = FeedEntry(context: context, serverEntry: entry, page: page)
                     
-                    print("Adding entry with title: \(entry.title)")
+                    print("Adding entry with title: \(String(describing: entry.title))")
                     
                     // Simulate a slow process by sleeping
                     if delay > 0 {
@@ -218,7 +249,7 @@ class AddEntriesToStoreOperation: Operation {
 class DeleteFeedEntriesOperation: Operation {
     private let context: NSManagedObjectContext
     var predicate: NSPredicate?
-    var delay: TimeInterval = 0.0005
+    var delay: TimeInterval = 1
     
     init(context: NSManagedObjectContext) {
         self.context = context
