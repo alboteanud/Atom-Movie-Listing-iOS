@@ -6,10 +6,13 @@
                 <entry key="key" value="id"/>
             </userInfo>
         </attribute>
+        <attribute name="original_language" optional="YES" attributeType="String"/>
         <attribute name="overview" optional="YES" attributeType="String"/>
+        <attribute name="popularity" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="poster_path" optional="YES" attributeType="String"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="release_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="vote_average" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -20,6 +23,6 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="FeedEntry" positionX="-54" positionY="-9" width="128" height="104"/>
+        <element name="FeedEntry" positionX="-54" positionY="-9" width="128" height="149"/>
     </elements>
 </model>

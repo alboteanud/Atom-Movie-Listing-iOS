@@ -9,33 +9,25 @@ import UIKit
 import CoreData
 
 class FeedTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
-//    var server: Server!
     private let server: Server = MockServer()
     var fetchRequest: NSFetchRequest<FeedEntry>!
     
     private var fetchedResultsController: NSFetchedResultsController<FeedEntry>!
     
-    @IBAction func buttonTapped(_ sender: Any) {
-        fetchMovies()
-    }
-    
-    func fetchMovies() {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        let context = PersistentContainer.shared.newBackgroundContext()
-        let operations = Operations.getOperationsToFetchLatestEntries(using: context, server: server)
-        let lastOperation = operations.last!
-        queue.addOperations(operations, waitUntilFinished: false)
+    @IBAction func updateButtonTapped(_ sender: Any) {
+        fetchLatestEntries()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        tableView.separatorStyle = .none
-        
+        navigationItem.titleView = getTitleView(titleText: "ATOM", imageName: "Atom")
+        initFetchedResultsController()
+    }
+    
+    func initFetchedResultsController(){
         if fetchRequest == nil {
             fetchRequest = FeedEntry.fetchRequest()
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.timestamp), ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.popularity), ascending: false)]
         }
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                               managedObjectContext: PersistentContainer.shared.viewContext,
@@ -59,9 +51,7 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
         if fetchedResultsController.sections?.count ?? 0 > 0 {
             let sectionInfo = fetchedResultsController.sections![section]
             return sectionInfo.numberOfObjects
-        } else {
-            return 0
-        }
+        } else { return 0 }
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -121,36 +111,108 @@ class FeedTableViewController: UITableViewController, NSFetchedResultsController
         let feedEntry = fetchedResultsController.object(at: indexPath)
         cell.feedEntry = feedEntry
     }
+    
+    // method to run when table view cell is tapped
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+           
+           // Segue to the second view controller
+           self.performSegue(withIdentifier: "showDetails", sender: self)
+       }
         
-    @IBAction private func fetchLatestEntries(_ sender: UIRefreshControl) {
-        sender.beginRefreshing()
-        
+    @IBAction func onRefreshPull(_ sender: UIRefreshControl) {
+        fetchLatestEntries(sender)
+    }
+    
+    func fetchLatestEntries(_ sender: UIRefreshControl? = nil){
+        sender?.beginRefreshing()
+
+        // update local DB
         let queue = OperationQueue()
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 1
-        
+
         let context = PersistentContainer.shared.newBackgroundContext()
         let operations = Operations.getOperationsToFetchLatestEntries(using: context, server: server)
         operations.last?.completionBlock = {
             DispatchQueue.main.async {
-                sender.endRefreshing()
+                sender?.endRefreshing()
             }
         }
-        
         queue.addOperations(operations, waitUntilFinished: false)
     }
+    
     
     @IBAction private func showActions(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.popoverPresentationController?.barButtonItem = sender
-        
-        alertController.addAction(UIAlertAction(title: "Reset Feed Data", style: .destructive, handler: { _ in
-            PersistentContainer.shared.loadInitialData(onlyIfNeeded: false)
+
+        let deleteText = NSLocalizedString("Delete all stored data", comment: "You want to delete all data")
+        alertController.addAction(UIAlertAction(title: deleteText, style: .destructive, handler: { _ in
+            PersistentContainer.shared.deleteAllStoredData()
+//            PersistentContainer.shared.loadInitialData(onlyIfNeeded: false)
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
+        let cancelText =  NSLocalizedString("Cancel", comment: "Quit")
+        alertController.addAction(UIAlertAction(title: cancelText, style: .cancel, handler: nil))
+
         present(alertController, animated: true, completion: nil)
     }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetails" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let object = fetchedResultsController.object(at: indexPath)
+                let controller = segue.destination as! DetailsViewController
+                controller.feedEntry = object
+                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                controller.navigationItem.leftItemsSupplementBackButton = true
+            }
+        }
+    }
+    
+    
+    func getTitleView(titleText: String, imageName: String) -> UIView {
+
+        // Creates a new UIView
+        let titleView = UIView()
+
+        // Creates a new text label
+        let label = UILabel()
+        label.text = titleText
+        label.sizeToFit()
+        label.center = titleView.center
+        label.textAlignment = NSTextAlignment.center
+
+        // Creates the image view
+        let image = UIImageView()
+        image.image = UIImage(named: imageName)
+
+        // Maintains the image's aspect ratio:
+        let imageAspect = image.image!.size.width / image.image!.size.height
+
+        // Sets the image frame so that it's immediately before the text:
+        let imageX = label.frame.origin.x - label.frame.size.height * imageAspect
+        let imageY = label.frame.origin.y
+
+        let imageWidth = label.frame.size.height * imageAspect
+        let imageHeight = label.frame.size.height
+
+        image.frame = CGRect(x: imageX, y: imageY, width: imageWidth, height: imageHeight)
+
+        image.contentMode = UIView.ContentMode.scaleAspectFit
+
+        // Adds both the label and image view to the titleView
+        titleView.addSubview(label)
+        titleView.addSubview(image)
+
+        // Sets the titleView frame to fit within the UINavigation Title
+        titleView.sizeToFit()
+
+        return titleView
+    }
+    
 }
 
 

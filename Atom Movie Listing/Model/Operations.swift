@@ -14,15 +14,15 @@ struct Operations {
         let fetchMostRecentEntry = FetchMostRecentEntryOperation(context: context)
         let downloadFromServer = DownloadEntriesFromServerOperation(context: context,
                                                                              server: server)
-        let passTimestampToServer = BlockOperation { [unowned fetchMostRecentEntry, unowned downloadFromServer] in
-            guard let timestamp = fetchMostRecentEntry.result?.timestamp else {
+//        let passTimestampToServer = BlockOperation { [unowned fetchMostRecentEntry, unowned downloadFromServer] in
+//            guard let timestamp = fetchMostRecentEntry.result?.release_date else {
 //                downloadFromServer.cancel()
-                return
-            }
-            downloadFromServer.sinceDate = timestamp
-        }
-        passTimestampToServer.addDependency(fetchMostRecentEntry)
-        downloadFromServer.addDependency(passTimestampToServer)
+//                return
+//            }
+//            downloadFromServer.sinceDate = timestamp
+//        }
+//        passTimestampToServer.addDependency(fetchMostRecentEntry)
+//        downloadFromServer.addDependency(passTimestampToServer)
         
         let addToStore = AddEntriesToStoreOperation(context: context)
         let passServerResultsToStore = BlockOperation { [unowned downloadFromServer, unowned addToStore] in
@@ -36,7 +36,7 @@ struct Operations {
         addToStore.addDependency(passServerResultsToStore)
         
         return [fetchMostRecentEntry,
-                passTimestampToServer,
+//                passTimestampToServer,
                 downloadFromServer,
                 passServerResultsToStore,
                 addToStore]
@@ -55,7 +55,7 @@ class FetchMostRecentEntryOperation: Operation {
     
     override func main() {
         let request: NSFetchRequest<FeedEntry> = FeedEntry.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.timestamp), ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.release_date), ascending: false)]
         request.fetchLimit = 1
         
         context.performAndWait {
@@ -151,15 +151,29 @@ extension FeedEntry {
         self.title = serverEntry.title
         self.poster_path = serverEntry.poster_path
         self.overview = serverEntry.overview
-        self.timestamp = Date()
+        self.release_date = getDate(serverEntry.release_date)
+        self.popularity = serverEntry.popularity ?? 0
+        self.original_language = original_language
+        self.vote_average = vote_average
     }
+}
+
+func getDate(_ dateString: String?) -> Date {
+    guard let dateString = dateString else {
+        return Date()
+    }
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // "2020-10-01"
+    let date = dateFormatter.date(from: dateString) ?? Date()
+//    print(date.debugDescription)
+    return date
 }
 
 // Add entries returned from the server to the Core Data store.
 class AddEntriesToStoreOperation: Operation {
     private let context: NSManagedObjectContext
     var entries: [ServerEntry]?
-    var delay: TimeInterval = 0
+    var delay: TimeInterval = 0.2
 
     init(context: NSManagedObjectContext) {
         self.context = context
@@ -221,13 +235,13 @@ class DeleteFeedEntriesOperation: Operation {
     override func main() {
         let fetchRequest: NSFetchRequest<FeedEntry> = FeedEntry.fetchRequest()
         fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.timestamp), ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.release_date), ascending: true)]
         
         context.performAndWait {
             do {
                 let entriesToDelete = try context.fetch(fetchRequest)
                 for entry in entriesToDelete {
-                    print("Deleting entry with timestamp: \(entry.timestamp?.description ?? "(nil)")")
+                    print("Deleting entry with date: \(entry.release_date?.description ?? "(nil)")")
                     
                     context.delete(entry)
                     

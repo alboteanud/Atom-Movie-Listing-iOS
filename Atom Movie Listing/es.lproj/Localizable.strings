@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  Atom Movie Listing
+
+  Created by Dan Alboteanu on 21.11.2020.
+  
+*/
+
+"Delete all stored data" = "Eliminar todos los datos almacenados";
+"Cancel" = "Cancelar";

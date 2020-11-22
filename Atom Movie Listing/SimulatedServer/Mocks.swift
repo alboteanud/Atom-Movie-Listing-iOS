@@ -46,25 +46,14 @@ class MockServer: Server {
         }
     }
 
-//    func fetchEntries(since startDate: Date, completion: @escaping (Result<[ServerEntry], Error>) -> Void) -> DownloadTask {
-//        let now = Date()
-//
-//        let entries = generateFakeEntries(from: startDate, to: now)
-//
-//        return MockDownloadTask(delay: Double.random(in: 0..<2.5), queue: queue, onSuccess: {
-//            completion(.success(entries))
-//        }, onCancelled: {
-//            completion(.failure(DownloadError.cancelled))
-//        })
-//    }
-
     // fetch movies
     func fetchEntries (since startDate: Date, completion: @escaping (Result<[ServerEntry], Error>) -> Void) -> URLSessionDataTask? {
-        let urlString = getEndpointUrl(pageNumber: 1)
+        let urlString = getEntriesEndpointUrl(pageNumber: 1)
         let url = URL(string: urlString)!   //        else {completion(.failure(DownloadError.invalidRequest))
         
         return URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else {
+                print("downloaded data is nil.  \(String(describing: error?.localizedDescription))")
                 completion(.failure(DownloadError.emptyResponse))
                 return
             }
@@ -75,14 +64,50 @@ class MockServer: Server {
                         completion(.success(decoded.results))
                     }
                 } else {
+                    print("downloaded data is empty")
                     completion(.failure(DownloadError.emptyResponse))}
             } catch {
-                completion(.failure(DownloadError.networkError))}
+                print("error while parsing json response. \(error.localizedDescription)")
+                completion(.failure(DownloadError.emptyResponse))}
         }
     }
     
-    func getEndpointUrl(pageNumber: Int) -> String {
+    // fetch single movie
+    func fetchEntry (entryId: Int32, completion: @escaping (ServerResultSingleEntry?) -> Void) -> URLSessionDataTask? {
+        let urlString = getEntryEndpointUrl(entryId: entryId)
+        guard let url = URL(string: urlString)
+        else {
+            print("url malformed")
+            return nil
+            
+        }
+        
+        return URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                print("downloaded data is nil.  \(String(describing: error?.localizedDescription))")
+                completion(nil)
+                return
+            }
+            do {
+                let decoded = try JSONDecoder().decode(ServerResultSingleEntry.self, from: data)
+//                print("downloaded entry data genres: \(String(describing: decoded.genres))")
+                self.queue.async {
+                    completion(decoded)
+                }
+            } catch {
+                print("error while parsing json response. \(error.localizedDescription)")
+                completion(nil)}
+        }
+    }
+    
+    func getEntriesEndpointUrl(pageNumber: Int) -> String {
         return "https://api.themoviedb.org/3/movie/popular?api_key=8700e0b55b9438b27963771c2aff54f5"
+    }
+    
+    func getEntryEndpointUrl(entryId: Int32) -> String {
+        // https://api.themoviedb.org/3/movie/741067?api_key=8700e0b55b9438b27963771c2aff54f5
+        let url = "https://api.themoviedb.org/3/movie/\(entryId)?api_key=8700e0b55b9438b27963771c2aff54f5"
+        return url
     }
     
     func buildPhotoDownloadUrl(photoPath: String) -> URL? {
@@ -111,7 +136,7 @@ class MockServer: Server {
 extension PersistentContainer {
     // Fills the Core Data store with initial fake data
     // If onlyIfNeeded is true, only does so if the store is empty
-    func loadInitialData(onlyIfNeeded: Bool = true) {
+    func loadInitialData(onlyIfNeeded: Bool = true, server: Server) {
         let context = newBackgroundContext()
         context.perform {
             do {
@@ -130,6 +155,7 @@ extension PersistentContainer {
                     let end = now - (60 * 60)
                     
 //                    _ = generateFakeEntries(from: start, to: end).map { FeedEntry(context: context, serverEntry: $0) }
+                    self.fetchLatestEntries(server: server)
                     try context.save()
                     
                     self.lastCleaned = nil
@@ -139,36 +165,22 @@ extension PersistentContainer {
             }
         }
     }
-}
+    
+    func fetchLatestEntries(server: Server){
 
-//extension ServerEntry.Color {
-//    static func makeRandom() -> ServerEntry.Color {
-//        let randomRed = Double.random(in: 0...1)
-//        let randomBlue = Double.random(in: 0...1)
-//        let randomGreen = Double.random(in: 0...1)
-//
-//        return ServerEntry.Color(red: randomRed, blue: randomBlue, green: randomGreen)
-//    }
-//}
-//
-//extension ServerEntry {
-//    static func makeRandom(timestamp: Date) -> ServerEntry {
-//        return ServerEntry(timestamp: timestamp,
-//                           firstColor: Color.makeRandom(),
-//                           secondColor: Color.makeRandom(),
-//                           gradientDirection: Double.random(in: 0..<360))
-//    }
-//}
-//
-//private func generateFakeEntries(from startDate: Date,
-//                                 to endDate: Date,
-//                                 interval: TimeInterval = 60 * 10,
-//                                 variation: TimeInterval = 5 * 60) -> [ServerEntry] {
-//    var entries = [ServerEntry]()
-//    for time in stride(from: startDate.timeIntervalSince1970, to: endDate.timeIntervalSince1970, by: interval) {
-//        let randomVariation = Double.random(in: -(variation)...(variation))
-//        let fakeTime = max(startDate.timeIntervalSince1970, min(time + randomVariation, endDate.timeIntervalSince1970))
-//        entries.append(ServerEntry.makeRandom(timestamp: Date(timeIntervalSince1970: fakeTime)))
-//    }
-//    return entries
-//}
+        // update local DB
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
+        queue.maxConcurrentOperationCount = 1
+
+        let context = newBackgroundContext()
+        let operations = Operations.getOperationsToFetchLatestEntries(using: context, server: server)
+        operations.last?.completionBlock = {
+//            DispatchQueue.main.async {
+       
+//            }
+        }
+        queue.addOperations(operations, waitUntilFinished: false)
+    }
+    
+}

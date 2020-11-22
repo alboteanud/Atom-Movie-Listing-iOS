@@ -52,8 +52,8 @@ extension UIImageView {
                 let image = UIImage(data: data)
             else { return }
             
-            DispatchQueue.main.async {  [weak self] in
-                self?.image = image
+            DispatchQueue.main.async { 
+                self.image = image
             }
             return
             

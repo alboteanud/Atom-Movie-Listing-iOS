@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A47983B3256906C300719CE3 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47983B2256906C300719CE3 /* DetailsViewController.swift */; };
+		A47983C32569BEC200719CE3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A47983C52569BEC200719CE3 /* Localizable.strings */; };
 		A48001B3256436950058EA13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B2256436950058EA13 /* AppDelegate.swift */; };
 		A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B4256436950058EA13 /* SceneDelegate.swift */; };
 		A48001B7256436950058EA13 /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48001B6256436950058EA13 /* FeedTableViewController.swift */; };
@@ -41,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A47983B2256906C300719CE3 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		A47983BF2569BD6900719CE3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		A47983C42569BEC200719CE3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A48001AF256436950058EA13 /* Atom Movie Listing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Atom Movie Listing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48001B2256436950058EA13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A48001B4256436950058EA13 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +125,7 @@
 				A48001C0256436950058EA13 /* LaunchScreen.storyboard */,
 				A48001C3256436950058EA13 /* Info.plist */,
 				A489AA5A2567DC98001973FE /* SimulatedServer */,
+				A47983C52569BEC200719CE3 /* Localizable.strings */,
 			);
 			path = "Atom Movie Listing";
 			sourceTree = "<group>";
@@ -145,9 +151,9 @@
 		A48001E8256439A50058EA13 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */,
 				A48001EE256439D80058EA13 /* PersistentContainer.swift */,
 				A48001E9256439B00058EA13 /* Operations.swift */,
-				A48001BB256436950058EA13 /* Atom_Movie_Listing.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -158,6 +164,7 @@
 				A48001B8256436950058EA13 /* Main.storyboard */,
 				A489AA552567D83B001973FE /* FeedEnrtyTableViewCell.swift */,
 				A48001B6256436950058EA13 /* FeedTableViewController.swift */,
+				A47983B2256906C300719CE3 /* DetailsViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -255,6 +262,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = A48001A6256436950058EA13;
 			productRefGroup = A48001B0256436950058EA13 /* Products */;
@@ -274,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A48001C2256436950058EA13 /* LaunchScreen.storyboard in Resources */,
+				A47983C32569BEC200719CE3 /* Localizable.strings in Resources */,
 				A48001BF256436950058EA13 /* Assets.xcassets in Resources */,
 				A48001BA256436950058EA13 /* Main.storyboard in Resources */,
 			);
@@ -309,6 +318,7 @@
 				A48001B5256436950058EA13 /* SceneDelegate.swift in Sources */,
 				A48001EA256439B00058EA13 /* Operations.swift in Sources */,
 				A489AA5C2567DCB8001973FE /* Mocks.swift in Sources */,
+				A47983B3256906C300719CE3 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,10 +354,19 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A47983C52569BEC200719CE3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A47983C42569BEC200719CE3 /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		A48001B8256436950058EA13 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A48001B9256436950058EA13 /* Base */,
+				A47983BF2569BD6900719CE3 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -367,6 +386,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -428,6 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

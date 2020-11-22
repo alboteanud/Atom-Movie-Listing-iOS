@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        PersistentContainer.shared.loadInitialData()
+        PersistentContainer.shared.loadInitialData(server:server)
         
         // MARK: Registering Launch Handlers for Tasks
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.albotenu.AtomMovieListing.refresh", using: nil) { task in
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: "com.albotenu.AtomMovieListing.refresh")
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60) // Fetch no earlier than 15 minutes from now
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 3 * 60 * 60) // Fetch no earlier than 3 hours from now
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
@@ -112,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         queue.maxConcurrentOperationCount = 1
 
         let context = PersistentContainer.shared.newBackgroundContext()
-        let predicate = NSPredicate(format: "timestamp < %@", NSDate(timeIntervalSinceNow: -24 * 60 * 60))
+        let predicate = NSPredicate(format: "release_date < %@", NSDate(timeIntervalSinceNow: -7 * 24 * 60 * 60))
         let cleanDatabaseOperation = DeleteFeedEntriesOperation(context: context, predicate: predicate)
         
         task.expirationHandler = {

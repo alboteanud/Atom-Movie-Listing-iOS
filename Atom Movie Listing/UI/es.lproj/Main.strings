@@ -1,0 +1,36 @@
+
+/* Class = "UINavigationItem"; title = "Root View Controller"; ObjectID = "3Wr-Yd-U9M"; */
+"3Wr-Yd-U9M.title" = "Root View Controller";
+
+/* Class = "UILabel"; text = "companies"; ObjectID = "9cl-OJ-2xX"; */
+"9cl-OJ-2xX.text" = "companies";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "E6e-qV-4dg"; */
+"E6e-qV-4dg.text" = "Label";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "EuI-Cf-9Us"; */
+"EuI-Cf-9Us.text" = "Title";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "FON-48-iol"; */
+"FON-48-iol.text" = "Title";
+
+/* Class = "UILabel"; text = "Category"; ObjectID = "FPQ-aD-lO7"; */
+"FPQ-aD-lO7.text" = "Category";
+
+/* Class = "UIBarButtonItem"; title = "Button"; ObjectID = "SD8-gv-XLT"; */
+"SD8-gv-XLT.title" = "Button";
+
+/* Class = "UILabel"; text = "Overview"; ObjectID = "dl3-pa-OOP"; */
+"dl3-pa-OOP.text" = "Overview";
+
+/* Class = "UITableViewController"; title = "Popular Movies"; ObjectID = "kPt-DU-EZ8"; */
+"kPt-DU-EZ8.title" = "Popular Movies";
+
+/* Class = "UILabel"; text = "Production companies"; ObjectID = "m6M-xe-9Dy"; */
+"m6M-xe-9Dy.text" = "Production companies";
+
+/* Class = "UILabel"; text = "Overview description"; ObjectID = "s0a-rw-S8D"; */
+"s0a-rw-S8D.text" = "Overview description";
+
+/* Class = "UIBarButtonItem"; title = "Reset"; ObjectID = "zXu-61-EHe"; */
+"zXu-61-EHe.title" = "Reiniciar";
