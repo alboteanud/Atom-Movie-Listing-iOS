@@ -167,7 +167,7 @@ extension PersistentContainer {
         let context = newBackgroundContext()
         context.perform {
             do {
-                let allEntriesRequest: NSFetchRequest<NSFetchRequestResult> = ListEntry.fetchRequest()
+                let allEntriesRequest: NSFetchRequest<NSFetchRequestResult> = FeedEntry.fetchRequest()
                 if !onlyIfNeeded {
                     // Delete all data currently in the store
                     let deleteAllRequest = NSBatchDeleteRequest(fetchRequest: allEntriesRequest)

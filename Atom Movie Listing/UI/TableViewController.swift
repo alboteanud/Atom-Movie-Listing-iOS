@@ -10,9 +10,9 @@ import CoreData
 
 class TableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     private let server: Server = MovieServer()
-    var fetchRequest: NSFetchRequest<ListEntry>!
+    var fetchRequest: NSFetchRequest<FeedEntry>!
     
-    private var fetchedResultsController: NSFetchedResultsController<ListEntry>!
+    private var fetchedResultsController: NSFetchedResultsController<FeedEntry>!
     
     @IBAction func updateButtonTapped(_ sender: Any) {
         fetchLatestEntries()
@@ -26,8 +26,8 @@ class TableViewController: UITableViewController, NSFetchedResultsControllerDele
     
     func initFetchedResultsController(){
         if fetchRequest == nil {
-            fetchRequest = ListEntry.fetchRequest()
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ListEntry.popularity), ascending: false)]
+            fetchRequest = FeedEntry.fetchRequest()
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FeedEntry.popularity), ascending: false)]
         }
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                               managedObjectContext: PersistentContainer.shared.viewContext,
@@ -116,9 +116,9 @@ class TableViewController: UITableViewController, NSFetchedResultsControllerDele
     }
 
     func configure(cell: TableViewCell, at indexPath: IndexPath) {
-        let listEntry = fetchedResultsController.object(at: indexPath)
-        cell.listEntry = listEntry
-        server.fetchImage(listEntry.poster_path){ image in
+        let feedEntry = fetchedResultsController.object(at: indexPath)
+        cell.feedEntry = feedEntry
+        server.fetchImage(feedEntry.poster_path){ image in
             cell.entryImage = image
         }?.resume()
     }

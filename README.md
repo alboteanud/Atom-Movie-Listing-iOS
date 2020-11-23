@@ -13,7 +13,7 @@ Video screen recording:  https://www.youtube.com/watch?v=pcWNX3TOO8Q
 
 ### Note to the evaluator
 
-Make comments for me inside the code. 
+Make comments for me inside the code to help me improve my skills. 
 
 
 ### How the app works
