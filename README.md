@@ -1,8 +1,8 @@
 This app is presenting a list of movies taken from TMDB 
 
 <p align="center">
-  <img src="Screenshots/screen1.png" width="350" title="Screenshot 1 iPhone">
-  <img src="Screen3.png" width="350" alt="Screenshot 3 iPhone">
+  <img src="Screenshots/screen1.png" width="350" title="Screenshot  iPhone">
+  <img src="Screenshots/screen3.png" width="350" alt="Screenshot iPhone">
 </p>
 
 Video screen recording:  https://www.youtube.com/watch?v=pcWNX3TOO8Q
